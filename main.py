@@ -219,18 +219,46 @@ class MainApp(MDApp):
 
     def login(self, *args):
         scr.current = "login"
+
     def create(self, *args):
         add= self.root.get_screen('signup')
         email = add.ids["email"].text
         password=add.ids["password"].text
         try:
             auth.create_user_with_email_and_password(email, password)
+            self.dialog = MDDialog(
+                title="SUCESSFULLY CREATED",
+                text="CLICK BACK TO LOGIN PAGE",
+                size_hint=(0.7, 1),
+                radius=[20, 7, 20, 7],
+                buttons=[
+                    MDFlatButton(
+                        text="OK",
+                        theme_text_color="Error",
+                        text_color=self.theme_cls.primary_color, on_release=self.closeDialog
+                    ), ], )
+            self.dialog.open()
 
         except:
-            print("hello")
-
-
-def log(self, *args):
+            self.dialog = MDDialog(
+                title="INVALID LOGIN",
+                text="Please enter corrent login id",
+                size_hint=(0.7, 1),
+                radius=[20, 7, 20, 7],
+                buttons=[
+                    MDFlatButton(
+                        text="OK",
+                        theme_text_color="Error",
+                        text_color=self.theme_cls.primary_color, on_release=self.closeDialog
+                    ),
+                    MDFlatButton(
+                        text="CANCEL",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
+                    )
+                , ], )
+            self.dialog.open()
+    def log(self, *args):
         new = self.root.get_screen('login')
         email = new.ids["email"].text
         password = new.ids["password"].text
@@ -262,10 +290,11 @@ def log(self, *args):
                         text="OK",
                         theme_text_color="Error",
                         text_color=self.theme_cls.primary_color, on_release=self.closeDialog
-                        ),],)
+                        )
+                    ,],)
             self.dialog.open()
 
-    def closeDialog(self):
+    def closeDialog(self, inst):
         self.dialog.dismiss()
 
 
