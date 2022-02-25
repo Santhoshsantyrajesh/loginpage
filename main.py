@@ -1,6 +1,7 @@
 import pyrebase
 from kivymd.app import MDApp
 from kivy.uix.button import Button
+from kivymd.uix.button import MDFlatButton
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.screen import MDScreen
 from kivy.clock import Clock
@@ -227,6 +228,7 @@ class MainApp(MDApp):
 
         except:
             print("unsucess")
+
     def log(self, *args):
         print("clicked")
         new = self.root.get_screen('login')
@@ -234,8 +236,28 @@ class MainApp(MDApp):
         password = new.ids["password"].text
         try:
             auth.sign_in_with_email_and_password(email, password)
-            print("success")
+
+            scr.current = 'menu'
+
         except:
-            print("unsucess")
+            print("unsu")
+            self.dialog = MDDialog(
+                text="INVALID LOGIN",radius=[20, 7, 20, 7],
+                buttons=[
+                        MDFlatButton(
+                            text="CANCEL", text_color=self.theme_cls.primary_color, on_release=self.closeDialog
+                        ),
+                        MDFlatButton(
+                            text="OK", text_color=self.theme_cls.primary_color, on_release=self.log
+                        ),
+
+
+                ],)
+            self.dialog.open()
+
+    def closeDialog(self, inst):
+        self.dialog.dismiss()
+
+
 if __name__ == "__main__":
     MainApp().run()
