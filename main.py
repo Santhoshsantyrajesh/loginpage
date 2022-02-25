@@ -227,19 +227,10 @@ class MainApp(MDApp):
             auth.create_user_with_email_and_password(email, password)
 
         except:
-            self.dialog = MDDialog(
-                title="INVALID LOGIN",
-                text="Please enter corrent login id",
-                size_hint=(0.7, 1),
-                radius=[20, 7, 20, 7],
-                buttons=[
-                    MDFlatButton(
-                        text="OK",
-                        theme_text_color="Error",
-                        text_color=self.theme_cls.primary_color, on_release=self.closeDialog
-                    ), ], )
-            self.dialog.open()
-    def log(self, *args):
+            print("hello")
+
+
+def log(self, *args):
         new = self.root.get_screen('login')
         email = new.ids["email"].text
         password = new.ids["password"].text
@@ -274,7 +265,7 @@ class MainApp(MDApp):
                         ),],)
             self.dialog.open()
 
-    def closeDialog(self, inst):
+    def closeDialog(self):
         self.dialog.dismiss()
 
 
