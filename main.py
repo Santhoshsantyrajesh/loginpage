@@ -131,9 +131,10 @@ ScreenManager:
             pos_hint:{'center_x': 0.6, 'center_y': 0.5}
             md_bg_color: 1, 0, 1, 1
             on_press:app.create() 
-        MDRectangleFlatButton:
-            text: 'backlogin'
+        MDRaisedButton:
+            text: 'Backlogin'
             pos_hint: {'center_x':0.4,'center_y':0.5}
+            md_bg_color: 1, 0, 1, 1
             on_press: root.manager.current = 'login'
         """
 LO = '''
@@ -219,7 +220,6 @@ class MainApp(MDApp):
     def login(self, *args):
         scr.current = "login"
     def create(self, *args):
-        print("clicked")
         add= self.root.get_screen('signup')
         email = add.ids["email"].text
         password=add.ids["password"].text
@@ -227,32 +227,51 @@ class MainApp(MDApp):
             auth.create_user_with_email_and_password(email, password)
 
         except:
-            print("unsucess")
-
+            self.dialog = MDDialog(
+                title="INVALID LOGIN",
+                text="Please enter corrent login id",
+                size_hint=(0.7, 1),
+                radius=[20, 7, 20, 7],
+                buttons=[
+                    MDFlatButton(
+                        text="OK",
+                        theme_text_color="Error",
+                        text_color=self.theme_cls.primary_color, on_release=self.closeDialog
+                    ), ], )
+            self.dialog.open()
     def log(self, *args):
-        print("clicked")
         new = self.root.get_screen('login')
         email = new.ids["email"].text
         password = new.ids["password"].text
         try:
             auth.sign_in_with_email_and_password(email, password)
+            self.dialog = MDDialog(
+                title="WELCOME",
+                text=email,
+                size_hint=(0.7, 1),
+                radius=[20, 7, 20, 7],
+                buttons=[
+                    MDFlatButton(
+                        text="OK",
+                        theme_text_color="Error",
+                        text_color=self.theme_cls.primary_color, on_release=self.closeDialog
+                    ), ], )
+            self.dialog.open()
 
             scr.current = 'menu'
 
         except:
-            print("unsu")
             self.dialog = MDDialog(
-                text="INVALID LOGIN",radius=[20, 7, 20, 7],
+                title="INVALID LOGIN",
+                text="Please enter correct id and password",
+                size_hint=(0.7,1),
+                radius=[20, 7, 20, 7],
                 buttons=[
                         MDFlatButton(
-                            text="CANCEL", text_color=self.theme_cls.primary_color, on_release=self.closeDialog
-                        ),
-                        MDFlatButton(
-                            text="OK", text_color=self.theme_cls.primary_color, on_release=self.log
-                        ),
-
-
-                ],)
+                        text="OK",
+                        theme_text_color="Error",
+                        text_color=self.theme_cls.primary_color, on_release=self.closeDialog
+                        ),],)
             self.dialog.open()
 
     def closeDialog(self, inst):
